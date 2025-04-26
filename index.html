@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#007bff" />
+  <title>📊 แดชบอร์ดสรุปรถเข้า-ออก</title>
+  <link rel="icon" href="assets/images/Logo.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .card-hover:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s ease;
+    }
+    a.card-link {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+      <img src="assets/images/Logo.png" alt="Logo" width="40" class="me-2" />
+      <h4 class="text-primary mb-0">📊 แดชบอร์ดสรุปรถเข้า-ออก</h4>
+    </div>
+
+    <div class="row g-3">
+      <!-- 🚗 ยังไม่ออก (ลิงก์เข้า pending.html) -->
+      <div class="col-md-4">
+        <a href="pending.html" class="card-link">
+          <div class="card text-white bg-warning text-center card-hover h-100">
+            <div class="card-body">
+              <h5 class="card-title">🚗 รถยังไม่ออก</h5>
+              <p class="card-text fs-3" id="pending">-</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- 📋 รถเข้าแล้ว -->
+      <div class="col-md-4">
+        <div class="card text-white bg-success text-center h-100">
+          <div class="card-body">
+            <h5 class="card-title">📋 รถเข้าแล้ว</h5>
+            <p class="card-text fs-3" id="inTotal">-</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🏁 รถออกแล้ว -->
+      <div class="col-md-4">
+        <div class="card text-white bg-secondary text-center h-100">
+          <div class="card-body">
+            <h5 class="card-title">🏁 รถออกแล้ว</h5>
+            <p class="card-text fs-3" id="outTotal">-</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ปุ่มเมนูล่าง -->
+    <div class="row row-cols-1 row-cols-sm-3 g-3 mt-4">
+      <div class="col text-center">
+        <a href="entry.html" class="btn btn-outline-primary w-100">📥 บันทึกรถเข้า</a>
+      </div>
+      <div class="col text-center">
+        <a href="checkout.html" class="btn btn-outline-success w-100">📤 บันทึกรถออก</a>
+      </div>
+      <div class="col text-center">
+        <a href="history.html" class="btn btn-outline-dark w-100">🕓 ดูประวัติ</a>
+      </div>
+    </div>
+
+    <!-- กล่องแจ้งเตือน -->
+    <div id="statusMsg" class="alert mt-4 d-none" role="alert"></div>
+
+    <audio id="successSound" src="assets/sound/success.mp3" preload="auto"></audio>
+  </div>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

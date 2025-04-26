@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🕓 ประวัติการเข้า-ออกรถ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" href="assets/images/Logo.png" />
+  <style>
+    .pagination li { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h2 class="text-secondary mb-4">🕓 ประวัติการเข้า-ออกรถ</h2>
+
+    <!-- ฟอร์มค้นหา -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <input type="text" id="searchPlate" class="form-control" placeholder="🔍 ค้นหาทะเบียนรถ..." />
+      </div>
+      <div class="col-md-4">
+        <select id="filterRange" class="form-select">
+          <option value="all">📅 แสดงทั้งหมด</option>
+          <option value="today">📅 เฉพาะวันนี้</option>
+          <option value="7days">📅 ย้อนหลัง 7 วัน</option>
+        </select>
+      </div>
+      <div class="col-md-4 text-end">
+        <a href="index.html" class="btn btn-secondary">← กลับหน้าหลัก</a>
+      </div>
+    </div>
+
+    <!-- ตารางแสดงข้อมูล -->
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>ทะเบียน</th>
+            <th>สถานที่</th>
+            <th>เวลาเข้า</th>
+            <th>เวลาออก</th>
+            <th>ระยะเวลา</th>
+            <th>สถานะ</th>
+            <th>รูป</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+          <tr><td colspan="7">⏳ กำลังโหลด...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ตัวแบ่งหน้า -->
+    <nav>
+      <ul id="pagination" class="pagination justify-content-center mt-3"></ul>
+    </nav>
+
+    <!-- กล่องแจ้งเตือน -->
+    <div id="statusMsg" class="alert mt-3 d-none" role="alert"></div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/history.js"></script>
+</body>
+</html>
