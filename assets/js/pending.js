@@ -1,10 +1,9 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.getElementById("pendingTableBody");
   const statusMsg = document.getElementById("statusMsg");
   const successSound = new Audio("assets/sound/success.mp3");
 
-  // 🧩 แสดงข้อความแจ้งเตือน
+  // 🧩 แสดงข้อความแจ้งเตือนแบบธรรมดา
   const showMsg = (msg, type = "info") => {
     statusMsg.textContent = msg;
     statusMsg.className = `alert alert-${type}`;
@@ -51,7 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🟢 ฟังก์ชันบันทึกเวลาออก
   window.checkout = async (plate) => {
-    if (!confirm(`ยืนยันบันทึกเวลาออกสำหรับรถ "${plate}"?`)) return;
+    const confirmResult = await Swal.fire({
+      title: 'ยืนยันบันทึกเวลาออก?',
+      text: `ทะเบียน: ${plate}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: '✅ ยืนยัน',
+      cancelButtonText: '❌ ยกเลิก',
+    });
+
+    if (!confirmResult.isConfirmed) return;
 
     try {
       const res = await fetch(SHEET_API_URL, {
@@ -61,14 +69,32 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const result = await res.text();
-      alert(result);
 
       if (result.startsWith("✅")) {
+        await Swal.fire({
+          title: 'บันทึกสำเร็จ',
+          text: result,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
         successSound.play();
-        loadPendingCars(); // รีโหลดรายการใหม่
+        loadPendingCars();
+      } else {
+        await Swal.fire({
+          title: 'เกิดข้อผิดพลาด',
+          text: result,
+          icon: 'error'
+        });
       }
+
     } catch (err) {
-      alert("❌ บันทึกล้มเหลว: " + err.message);
+      console.error("❌ บันทึกล้มเหลว:", err);
+      await Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message,
+        icon: 'error'
+      });
     }
   };
 });
