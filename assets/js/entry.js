@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const startTime = performance.now(); // ⏱️ จับเวลาเริ่ม
 
-    const plate = document.getElementById("plate").value.trim();
+    const plate = document.getElementById("plate").value.replace(/\s/g, "").trim();
     const house = houseSelect.value;
     const purpose = (purposeSelect.value === "อื่น ๆ")
       ? otherPurposeInput.value.trim()
