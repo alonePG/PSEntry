@@ -8,10 +8,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = form.querySelector("button[type='submit']");
   const successSound = new Audio("assets/sound/success.mp3");
 
+  const idCardImg = document.getElementById("idCardImg");
+  const openCameraBtn = document.getElementById("openCameraBtn");
+  const fileNameText = document.getElementById("fileNameText");
+
   loadHouseList();
 
   purposeSelect.addEventListener("change", () => {
     otherPurposeGroup.style.display = (purposeSelect.value === "อื่น ๆ") ? "block" : "none";
+  });
+
+  openCameraBtn.addEventListener("click", () => {
+    idCardImg.click();
+  });
+
+  idCardImg.addEventListener("change", () => {
+    if (idCardImg.files.length > 0) {
+      fileNameText.textContent = `📷 เลือกแล้ว: ${idCardImg.files[0].name}`;
+    } else {
+      fileNameText.textContent = "";
+    }
   });
 
   form.addEventListener("submit", async (e) => {
@@ -21,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return showMsg("📴 กรุณาเชื่อมต่ออินเทอร์เน็ตก่อน", "danger");
     }
 
-    const startTime = performance.now(); // ⏱️ จับเวลาเริ่ม
+    const startTime = performance.now(); // ⏱️ เริ่มจับเวลา
 
     const plate = document.getElementById("plate").value.replace(/\s/g, "").trim();
     const house = houseSelect.value;
@@ -29,9 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ? otherPurposeInput.value.trim()
       : purposeSelect.value;
     const note = document.getElementById("note").value.trim();
-    const fileInput = document.getElementById("idCardImg");
 
-    if (!plate || !house || !purpose || !fileInput.files[0]) {
+    if (!plate || !house || !purpose || !idCardImg.files[0]) {
       return showMsg("⚠️ กรุณากรอกข้อมูลให้ครบ", "warning");
     }
 
@@ -39,11 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     showMsg("⏳ กำลังบันทึกข้อมูล...", "secondary");
 
     try {
-      const base64Image = await compressAndWatermark(fileInput.files[0]);
+      const base64Image = await compressAndWatermark(idCardImg.files[0]);
 
       const data = new URLSearchParams({
         plate, house, purpose, note,
-        filename: fileInput.files[0].name,
+        filename: idCardImg.files[0].name,
         file: base64Image
       });
 
@@ -56,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await res.text();
       const isError = result.startsWith("🚫");
 
-      const endTime = performance.now(); // ⏱️ จับเวลาจบ
+      const endTime = performance.now();
       const durationSec = ((endTime - startTime) / 1000).toFixed(2);
 
       const finalMsg = isError
@@ -77,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// 📢 แสดงข้อความ
 function showMsg(msg, type = "info") {
   const status = document.getElementById("statusMsg");
   status.textContent = msg;
@@ -102,7 +118,7 @@ function loadHouseList() {
     });
 }
 
-// 🖼️ บีบอัดรูปและใส่ลายน้ำตรงกลาง แนวทะแยง
+// 🖼️ บีบอัดรูปและใส่ลายน้ำ
 async function compressAndWatermark(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -116,11 +132,10 @@ async function compressAndWatermark(file) {
         canvas.width = maxW;
         canvas.height = img.height * scale;
 
-        // วาดรูป
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // ใส่ลายน้ำ
-        const watermark = "สำหรับใช้ในระบบหมู่บ้านเท่านั้น";
+        // ลายน้ำ
+        const watermark = "สำหรับใช้ในระบบ PSV เท่านั้น";
         const fontSize = Math.floor(canvas.width / 20);
         ctx.font = `${fontSize}px sans-serif`;
         ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
