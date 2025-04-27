@@ -54,8 +54,12 @@
       </div>
 
       <div class="mb-3">
-        <label for="idCardImg" class="form-label">ถ่ายรูปบัตร / ทะเบียน</label>
-        <input type="file" accept="image/*" capture="environment" class="form-control" id="idCardImg" required />
+        <label class="form-label">ถ่ายรูปบัตร / ทะเบียน</label><br>
+        <button type="button" id="openCameraBtn" class="btn btn-outline-primary w-100 mb-2">
+          📸 เปิดกล้องถ่ายรูป
+        </button>
+        <input type="file" accept="image/*" capture="environment" class="d-none" id="idCardImg" required />
+        <div id="fileNameText" class="text-muted small mt-1"></div>
       </div>
 
       <button type="submit" class="btn btn-success w-100">
@@ -69,6 +73,7 @@
 
     <audio id="successSound" src="assets/sound/success.mp3" preload="auto"></audio>
   </div>
+
   <script src="assets/js/detect-app.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/entry.js"></script>
